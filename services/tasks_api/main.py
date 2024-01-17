@@ -9,7 +9,7 @@ from starlette import status  # new
 
 from config import Config  # new
 from models import Task  # new
-from schemas import APITask, CreateTask, APITaskList, CloseTask  # new
+from schemas import APITask, APITaskList, CloseTask, CreateTask  # new
 from store import TaskStore  # new
 
 app = FastAPI()
@@ -39,7 +39,9 @@ def health_check():
     return {"message": "OK"}
 
 
-@app.post("/api/create-task", response_model=APITask, status_code=status.HTTP_201_CREATED)
+@app.post(
+    "/api/create-task", response_model=APITask, status_code=status.HTTP_201_CREATED
+)
 def create_task(
     parameters: CreateTask,
     user_email: str = Depends(get_user_email),
@@ -50,12 +52,14 @@ def create_task(
 
     return task
 
+
 @app.get("/api/open-tasks", response_model=APITaskList)
 def open_tasks(
     user_email: str = Depends(get_user_email),
     task_store: TaskStore = Depends(get_task_store),
 ):
     return APITaskList(results=task_store.list_open(owner=user_email))
+
 
 @app.post("/api/close-task", response_model=APITask)
 def close_task(
@@ -69,11 +73,13 @@ def close_task(
 
     return task
 
+
 @app.get("/api/closed-tasks", response_model=APITaskList)
 def closed_tasks(
     user_email: str = Depends(get_user_email),
     task_store: TaskStore = Depends(get_task_store),
 ):
     return APITaskList(results=task_store.list_closed(owner=user_email))
+
 
 handle = Mangum(app)

@@ -1,8 +1,8 @@
 import uuid  # new
 
 import boto3  # new
-import pytest
 import jwt
+import pytest
 from fastapi import status
 from moto import mock_dynamodb  # new
 from starlette.testclient import TestClient
@@ -11,14 +11,17 @@ from main import app, get_task_store
 from models import Task, TaskStatus  # new
 from store import TaskStore  # new
 
+
 @pytest.fixture
 def task_store(dynamodb_table):
     return TaskStore(dynamodb_table)
+
 
 @pytest.fixture
 def client(task_store):
     app.dependency_overrides[get_task_store] = lambda: task_store
     return TestClient(app)
+
 
 def test_health_check(client):
     """
@@ -99,6 +102,7 @@ def test_closed_tasks_listed(dynamodb_table):
 
     assert repository.list_closed(owner=open_task.owner) == [closed_task]
 
+
 @pytest.fixture
 def user_email():
     return "bob@builder.com"
@@ -112,13 +116,7 @@ def id_token(user_email):
 def test_create_task(client, user_email, id_token):
     title = "Clean your desk"
     response = client.post(
-        "/api/create-task",
-        json={
-            "title": title
-        },
-        headers={
-            "Authorization": id_token
-        }
+        "/api/create-task", json={"title": title}, headers={"Authorization": id_token}
     )
     body = response.json()
 
@@ -128,16 +126,14 @@ def test_create_task(client, user_email, id_token):
     assert body["status"] == "OPEN"
     assert body["owner"] == user_email
 
+
 def test_list_open_tasks(client, user_email, id_token):
     title = "Kiss your wife"
     client.post(
         "/api/create-task", json={"title": title}, headers={"Authorization": id_token}
     )
 
-    response = client.get(
-        "/api/open-tasks",
-        headers={"Authorization": id_token}
-    )
+    response = client.get("/api/open-tasks", headers={"Authorization": id_token})
     body = response.json()
 
     assert response.status_code == status.HTTP_200_OK
@@ -145,6 +141,7 @@ def test_list_open_tasks(client, user_email, id_token):
     assert body["results"][0]["title"] == title
     assert body["results"][0]["owner"] == user_email
     assert body["results"][0]["status"] == TaskStatus.OPEN
+
 
 def test_close_task(client, user_email, id_token):
     title = "Read a book"
@@ -165,6 +162,7 @@ def test_close_task(client, user_email, id_token):
     assert body["owner"] == user_email
     assert body["status"] == TaskStatus.CLOSED
 
+
 def test_list_closed_tasks(client, user_email, id_token):
     title = "Ride big waves"
     response = client.post(
@@ -176,10 +174,7 @@ def test_list_closed_tasks(client, user_email, id_token):
         headers={"Authorization": id_token},
     )
 
-    response = client.get(
-        "/api/closed-tasks",
-        headers={"Authorization": id_token}
-    )
+    response = client.get("/api/closed-tasks", headers={"Authorization": id_token})
     body = response.json()
 
     assert response.status_code == status.HTTP_200_OK

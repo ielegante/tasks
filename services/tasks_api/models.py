@@ -19,16 +19,5 @@ class Task:
     def create(cls, id_, title, owner):
         return cls(id_, title, TaskStatus.OPEN, owner)
 
-@dataclass
-class Task:
-    id: UUID
-    title: str
-    status: TaskStatus
-    owner: str
-
-    @classmethod
-    def create(cls, id_, title, owner):
-        return cls(id_, title, TaskStatus.OPEN, owner)
-
     def close(self):  # new
         self.status = TaskStatus.CLOSED  # new
