@@ -23,7 +23,7 @@ Resources:
     Type: AWS::S3::BucketPolicy
     Properties:
       Bucket:
-        Fn::ImportValue: development-tasks-api-ielegante
+        Fn::ImportValue: s3-development-tasks-api-ielegante
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -34,7 +34,7 @@ Resources:
             Resource:
               Fn::Join:
                 - '/'
-                - - Fn::ImportValue: development-tasks-api-ielegante-arn
+                - - Fn::ImportValue: s3-development-tasks-api-ielegante-arn
                   - '*'
   APICachePolicy:  # new
     Type: AWS::CloudFront::CachePolicy
