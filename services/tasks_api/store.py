@@ -6,6 +6,7 @@ from models import Task, TaskStatus
 import datetime
 from boto3.dynamodb.conditions import Key
 
+
 class TaskStore:
     def __init__(self, table_name):
         self.table_name = table_name
@@ -62,7 +63,9 @@ class TaskStore:
         last_key = None
         query_kwargs = {
             "IndexName": "GS1",
-            "KeyConditionExpression": Key("GS1PK").eq(f"#{owner}#{TaskStatus.OPEN.value}"),
+            "KeyConditionExpression": Key("GS1PK").eq(
+                f"#{owner}#{TaskStatus.OPEN.value}"
+            ),
         }
         tasks = []
         while True:
