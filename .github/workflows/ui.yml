@@ -34,4 +34,4 @@ jobs:
       - name: Build
         run: npm run build
       - name: Deploy
-        run: sls deploy --stage development --verbos
+        run: sls deploy --stage development --verbose
