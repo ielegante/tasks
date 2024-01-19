@@ -73,65 +73,65 @@ Resources:
               - Content-Type
           QueryStringsConfig:
             QueryStringBehavior: none
-  TasksCloudFront:  # new
-    Type: AWS::CloudFront::Distribution
-    Properties:
-      DistributionConfig:
-        Origins:
-          - DomainName:
-              Fn::Join:
-                - '.'
-                - - Fn::ImportValue: s3-development-tasks-api-ielegante-name
-                  - 's3.amazonaws.com'
-            Id: vueApp
-            S3OriginConfig:
-              OriginAccessIdentity:
-                  Fn::Join:
-                      - ''
-                      -
-                        - 'origin-access-identity/cloudfront/'
-                        - Ref: CloudFrontOriginAccessIdentity
-          - DomainName: https://ytjyf6do4b.execute-api.eu-west-1.amazonaws.com/development/api
-            Id: api
-            OriginPath: /development
-            CustomOriginConfig:
-              HTTPSPort: '443'
-              OriginProtocolPolicy: https-only
-        Enabled: 'true'
-        DefaultRootObject: index.html
-        Aliases:
-          - Ref: Domain
-        DefaultCacheBehavior:
-          AllowedMethods:
-            - DELETE
-            - GET
-            - HEAD
-            - OPTIONS
-            - PATCH
-            - POST
-            - PUT
-          TargetOriginId: vueApp
-          ViewerProtocolPolicy: redirect-to-https
-          CachePolicyId:
-            Ref: VueAppCachePolicy
-        CacheBehaviors:
-          - AllowedMethods:
-            - DELETE
-            - GET
-            - HEAD
-            - OPTIONS
-            - PATCH
-            - POST
-            - PUT
-            CachePolicyId:
-              Ref: APICachePolicy
-            PathPattern: api/*
-            TargetOriginId: api
-            ViewerProtocolPolicy: redirect-to-https
-        ViewerCertificate:
-          AcmCertificateArn: arn:aws:acm:us-east-1:989757409235:certificate/ad59ba89-e418-4639-9105-8a860e084b8b
-          SslSupportMethod: sni-only
-          MinimumProtocolVersion: TLSv1.2_2021
+  # TasksCloudFront:  # new
+  #   Type: AWS::CloudFront::Distribution
+  #   Properties:
+  #     DistributionConfig:
+  #       Origins:
+  #         - DomainName:
+  #             Fn::Join:
+  #               - '.'
+  #               - - Fn::ImportValue: s3-development-tasks-api-ielegante-name
+  #                 - 's3.amazonaws.com'
+  #           Id: vueApp
+  #           S3OriginConfig:
+  #             OriginAccessIdentity:
+  #                 Fn::Join:
+  #                     - ''
+  #                     -
+  #                       - 'origin-access-identity/cloudfront/'
+  #                       - Ref: CloudFrontOriginAccessIdentity
+  #         - DomainName: https://ytjyf6do4b.execute-api.eu-west-1.amazonaws.com/development/api
+  #           Id: api
+  #           OriginPath: /development
+  #           CustomOriginConfig:
+  #             HTTPSPort: '443'
+  #             OriginProtocolPolicy: https-only
+  #       Enabled: 'true'
+  #       DefaultRootObject: index.html
+  #       Aliases:
+  #         - Ref: Domain
+  #       DefaultCacheBehavior:
+  #         AllowedMethods:
+  #           - DELETE
+  #           - GET
+  #           - HEAD
+  #           - OPTIONS
+  #           - PATCH
+  #           - POST
+  #           - PUT
+  #         TargetOriginId: vueApp
+  #         ViewerProtocolPolicy: redirect-to-https
+  #         CachePolicyId:
+  #           Ref: VueAppCachePolicy
+  #       CacheBehaviors:
+  #         - AllowedMethods:
+  #           - DELETE
+  #           - GET
+  #           - HEAD
+  #           - OPTIONS
+  #           - PATCH
+  #           - POST
+  #           - PUT
+  #           CachePolicyId:
+  #             Ref: APICachePolicy
+  #           PathPattern: api/*
+  #           TargetOriginId: api
+  #           ViewerProtocolPolicy: redirect-to-https
+  #       ViewerCertificate:
+  #         AcmCertificateArn: arn:aws:acm:us-east-1:989757409235:certificate/ad59ba89-e418-4639-9105-8a860e084b8b
+  #         SslSupportMethod: sni-only
+  #         MinimumProtocolVersion: TLSv1.2_2021
   CloudFrontDNSRecord:  # new
     Type: AWS::Route53::RecordSet
     Properties:
@@ -152,4 +152,8 @@ Outputs:
   DistributionDomainName:
     Description: The CloudFront distribution domain name
     Value:
-      Ref: TasksCloudFront
+      Ref:
+        Fn::Join:
+          - '.'
+          - - Fn::ImportValue: s3-development-tasks-api-ielegante-name
+            - 's3.amazonaws.com'
