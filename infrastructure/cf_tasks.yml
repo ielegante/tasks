@@ -152,7 +152,6 @@ Outputs:
   DistributionDomainName:
     Description: The CloudFront distribution domain name
     Value:
-      Ref:
         Fn::Join:
         - '.'
         - - Fn::ImportValue: s3-development-tasks-api-ielegante-name
