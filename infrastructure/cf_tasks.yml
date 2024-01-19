@@ -150,5 +150,3 @@ Outputs:
       Fn::GetAtt:
         - TasksCloudFront
         - DomainName
-```
-  
