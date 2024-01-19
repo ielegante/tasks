@@ -82,7 +82,7 @@ Resources:
               Fn::Join:
                 - '.'
                 - - Fn::ImportValue: s3-development-tasks-api-ielegante-name
-                  - 's3.amazonaws-website-eu-west-1.com'
+                  - 's3.eu-west-1.amazonaws.com'
             Id: vueApp
             S3OriginConfig:
               OriginAccessIdentity:
@@ -155,6 +155,6 @@ Outputs:
         Fn::Join:
         - '.'
         - - Fn::ImportValue: s3-development-tasks-api-ielegante-name
-          - 's3.amazonaws-website-eu-west-1.com'
+          - 's3.eu-west-1.amazonaws.com'
 # http://development-tasks-api-ielegante.s3-website-eu-west-1.amazonaws.com
 # development-tasks-api-ielegante.s3.amazonaws.com
