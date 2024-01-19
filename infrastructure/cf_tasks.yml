@@ -14,6 +14,11 @@ Resources:
         HostedZoneConfig
       Name:
         Ref: Domain
+  CloudFrontOriginAccessIdentity:  # new
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: "Tasks UI"
   VueAppS3Policy:  # new
     Type: AWS::S3::BucketPolicy
     Properties:
@@ -144,7 +149,7 @@ Outputs:
     Value:
       Ref: TasksHostedZone
 # Output the CloudFront distribution domain name
-  # DistributionDomainName:
-  #   Description: The CloudFront distribution domain name
-  #   Value:
-  #     Ref: TasksCloudFront
+  DistributionDomainName:
+    Description: The CloudFront distribution domain name
+    Value:
+      Ref: TasksCloudFront
