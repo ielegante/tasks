@@ -147,6 +147,4 @@ Outputs:
   DistributionDomainName:
     Description: The CloudFront distribution domain name
     Value:
-      Fn::GetAtt:
-        - TasksCloudFront
-        - DomainName
+      Ref: TasksCloudFront
